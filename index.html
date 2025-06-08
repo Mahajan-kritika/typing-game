@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Typing Game</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #fff;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+    }
+    .game-box {
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 600px;
+      width: 90%;
+    }
+    #word-display {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+    }
+    #input-box {
+      padding: 10px;
+      font-size: 1em;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    .stats {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    #start-btn {
+      padding: 10px 20px;
+      background-color: #00ffcc;
+      color: #000;
+      font-weight: bold;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Typing Game</h1>
+  <div class="game-box">
+    <div id="word-display">Press Start to Begin</div>
+    <input type="text" id="input-box" disabled />
+    <div class="stats">
+      Score: <span id="score">0</span> | Level: <span id="level">1</span>
+    </div>
+    <button id="start-btn">Start Game</button>
+  </div>
+
+  <script>
+    const easyWords = ["cat", "dog", "sun", "hat", "pen"];
+    const mediumWords = ["typing", "window", "rocket", "button", "flower"];
+    const hardWords = ["structure", "difficult", "beautiful", "universe", "knowledge"];
+    
+    let level = 1;
+    let score = 0;
+    let wordList = easyWords;
+    let currentWord = "";
+    let input = document.getElementById("input-box");
+    let wordDisplay = document.getElementById("word-display");
+    let scoreDisplay = document.getElementById("score");
+    let levelDisplay = document.getElementById("level");
+    let startBtn = document.getElementById("start-btn");
+
+    function pickWord() {
+      return wordList[Math.floor(Math.random() * wordList.length)];
+    }
+
+    function updateWord() {
+      currentWord = pickWord();
+      wordDisplay.textContent = currentWord;
+      input.value = "";
+      input.focus();
+    }
+
+    input.addEventListener("input", () => {
+      if (input.value.trim() === currentWord) {
+        score++;
+        scoreDisplay.textContent = score;
+
+        // Increase level and difficulty
+        if (score === 5) {
+          level = 2;
+          wordList = mediumWords;
+        } else if (score === 10) {
+          level = 3;
+          wordList = hardWords;
+        }
+        levelDisplay.textContent = level;
+        updateWord();
+      }
+    });
+
+    startBtn.addEventListener("click", () => {
+      score = 0;
+      level = 1;
+      wordList = easyWords;
+      scoreDisplay.textContent = score;
+      levelDisplay.textContent = level;
+      input.disabled = false;
+      updateWord();
+    });
+  </script>
+</body>
+</html>
